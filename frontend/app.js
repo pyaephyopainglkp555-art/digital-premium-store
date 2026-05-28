@@ -1,5 +1,5 @@
 // Backend API URL
-const API_URL = "digital-premium-store.vercel.app";
+const API_URL = "https://digital-premium-store.vercel.app/";
 
 // Home Page မှာ Product card များ လာပြပေးမည့် Function
 async function fetchProducts() {
