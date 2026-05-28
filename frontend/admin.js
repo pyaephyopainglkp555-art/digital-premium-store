@@ -1,5 +1,5 @@
-const BASE_URL = "http://127.0.0.1:5000/api/admin";
-const PUBLIC_URL = "http://127.0.0.1:5000/api/products";
+const BASE_URL = "https://digital-premium-store.vercel.app/api/admin";
+const PUBLIC_URL = "https://digital-premium-store.vercel.app/api/products";
 
 // ==========================================
 // 1. ADMIN LOGIN SYSTEM
@@ -158,7 +158,7 @@ if (window.location.pathname.includes('dashboard.html')) {
 }
 
 async function loadCurrentPaymentSettings() {
-    const response = await fetch("http://127.0.0.1:5000/api/payment-info");
+    const response = await fetch("https://digital-premium-store.vercel.app/api/payment-info");
     const data = await response.json();
     
     document.getElementById('kpay-num').value = data.kpay_num;
@@ -182,7 +182,7 @@ function setupPaymentFormEvent() {
             bank_name: document.getElementById('bank-name').value
         };
 
-        const response = await fetch("http://127.0.0.1:5000/api/admin/payment-info", {
+        const response = await fetch("https://digital-premium-store.vercel.app/api/admin/payment-info", {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payData)
