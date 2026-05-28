@@ -1,5 +1,5 @@
 // Backend API URL
-const API_URL = "http://127.0.0.1:5000/api/products";
+const API_URL = "digital-premium-store.vercel.app";
 
 // Home Page မှာ Product card များ လာပြပေးမည့် Function
 async function fetchProducts() {
