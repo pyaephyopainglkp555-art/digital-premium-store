@@ -1,38 +1,33 @@
-// Backend API URL - /api ကို အတိအကျ ထည့်ပေးလိုက်ပါပြီ
-const API_URL = "https://digital-premium-store.vercel.app/api";
+// Backend API URL - Vercel URL ကို ဒီနေရာမှာ ထည့်ပါ
+const API_URL = "https://digital-premium-store.vercel.app/api/products";
 
-// Home Page မှာ Product card များ လာပြပေးမည့် Function
-async function fetchProducts() {
+// ပစ္စည်းများကို ဆွဲယူပြီး ကတ်ပြားလေးတွေအဖြစ် ပြပေးမည့် Function
+async function loadProducts() {
     try {
-        // ဒီနေရာမှာ /products ကို အတိအကျ ခေါ်ပါမယ်
-        const response = await fetch(`${API_URL}/products`);
-        
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
+        // fetch ဆိုတာ Backend ဆီက ဒေတာတောင်းတဲ့ Command ပါ
+        const response = await fetch(API_URL);
         const products = await response.json();
+        
         const grid = document.getElementById('products-grid');
-        grid.innerHTML = ''; 
+        grid.innerHTML = ''; // Loading စာသားဖျက်မယ်
 
-        if (Array.isArray(products)) {
-            products.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => {
-                    window.location.href = `product.html?slug=${product.slug}`;
-                };
-                card.innerHTML = `
-                    <img src="${product.image_url}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <div class="price">${product.price.toLocaleString()} Ks</div>
-                    <button class="view-btn">Access Premium</button>
-                `;
-                grid.appendChild(card);
-            });
-        }
+        // ရလာတဲ့ ပစ္စည်းစာရင်းကို ကတ်လေးတွေအဖြစ် ပုံဖော်မယ်
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => window.location.href = `product.html?slug=${product.slug}`;
+            
+            card.innerHTML = `
+                <img src="${product.image_url}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <div class="price">${product.price.toLocaleString()} Ks</div>
+            `;
+            grid.appendChild(card);
+        });
     } catch (error) {
-        console.error("Error:", error);
-        document.getElementById('products-grid').innerHTML = `<p style="color:red;">Failed to connect with premium server.</p>`;
+        console.error("Error loading products:", error);
     }
 }
 
-window.onload = fetchProducts;
+// စာမျက်နှာဖွင့်တာနဲ့ ဒီ function ကို အလုပ်လုပ်ခိုင်းမယ်
+window.onload = loadProducts;

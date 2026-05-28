@@ -7,137 +7,88 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        .product-detail-container {
-            max-width: 1000px;
-            margin: 60px auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-        }
-        .product-visuals {
-            background: rgba(20, 20, 25, 0.6);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 60px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .product-visuals img {
-            max-height: 200px;
-            max-width: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.3));
-        }
-        .product-info h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-        .product-info .detail-price {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            color: #00f2fe;
-            margin-bottom: 30px;
-            font-weight: bold;
-        }
-        /* Payment Section Form */
-        .payment-area {
-            background: #141419;
-            border: 1px solid rgba(0, 242, 254, 0.1);
-            padding: 25px;
-            border-radius: 12px;
-            margin-top: 30px;
-        }
-        .payment-area h3 { font-family: 'Orbitron', sans-serif; color: #4facfe; margin-bottom: 15px; }
+        .product-detail-container { max-width: 1000px; margin: 60px auto; padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .product-visuals { background: rgba(20, 20, 25, 0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 60px; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .product-visuals img { max-height: 200px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.3)); }
+        .product-info h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; margin-bottom: 15px; }
+        .product-info .detail-price { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: #00f2fe; margin-bottom: 30px; font-weight: bold; }
+        .payment-area { background: #141419; border: 1px solid rgba(0, 242, 254, 0.1); padding: 25px; border-radius: 12px; margin-top: 30px; }
         .payment-info-box { background: #0a0a0c; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 3px solid #00f2fe; }
         .payment-info-box p { font-size: 0.95rem; margin-bottom: 5px; color: #a0a0ab; }
-        .payment-info-box strong { color: #fff; }
+        .form-control { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #333; border-radius: 5px; color: white; }
+        .view-btn { width: 100%; padding: 12px; background: #00f2fe; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">X-PREMIUM</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="#" class="admin-btn" onclick="window.location.href='admin-login.html'">Admin Panel</a>
-        </nav>
+        <nav><a href="index.html">Home</a></nav>
     </header>
 
     <main class="product-detail-container" id="product-details">
-        <p class="loading" style="grid-column: 1/-1;">Establishing secure product gateway...</p>
+        <p class="loading">Gateway initializing...</p>
     </main>
 
     <script>
-        // URL ထဲက ဥပမာ (?slug=netflix) ဆိုတဲ့ Parameter ကို ဖတ်ထုတ်ခြင်း
         const urlParams = new URLSearchParams(window.location.search);
         const slug = urlParams.get('slug');
-        const FETCH_SINGLE_URL = `http://digital-premium-store.vercel.app/api/products/${slug}`;
+        const BASE_URL = `https://digital-premium-store.vercel.app`;
 
-    async function loadProductDetails() {
-            if (!slug) {
-                window.location.href = 'index.html';
-                return;
-            }
-
+        async function loadProductDetails() {
+            if (!slug) { window.location.href = 'index.html'; return; }
             try {
-                // Product ရော Payment Info ပါ API ၂ ခုလုံးဆီကနေ ပြိုင်တူ ဒေတာလှမ်းတောင်းခြင်း
                 const [prodRes, payRes] = await Promise.all([
-                    fetch(FETCH_SINGLE_URL),
-                    fetch("http://digital-premium-store.vercel.app/api/payment-info")
+                    fetch(`${BASE_URL}/api/products/${slug}`),
+                    fetch(`${BASE_URL}/api/payment-info`)
                 ]);
-
                 const product = await prodRes.json();
                 const payment = await payRes.json();
-
                 const container = document.getElementById('product-details');
                 
                 container.innerHTML = `
-                    <div class="product-visuals">
-                        <img src="${product.image_url}" alt="${product.name}">
-                    </div>
-                    
+                    <div class="product-visuals"><img src="${product.image_url}" alt="${product.name}"></div>
                     <div class="product-info">
                         <h1>${product.name}</h1>
                         <div class="detail-price">${product.price.toLocaleString()} Ks</div>
-                        <p style="color: #8e8e93; line-height: 1.6;">Experience absolute premium quality with unhindered bandwidth, ultra-high-definition access, and guaranteed uptime.</p>
-                        
                         <div class="payment-area">
                             <h3>Secure Checkout</h3>
                             <div class="payment-info-box">
-                                <p>📱 KBZ Pay - <strong>${payment.kpay_num}</strong> (${payment.kpay_name})</p>
-                                <p>🌊 Wave Money - <strong>${payment.wave_num}</strong> (${payment.wave_name})</p>
-                                <p>💳 Bank Transfer - <strong>${payment.bank_num}</strong> (${payment.bank_name})</p>
+                                <p>📱 KBZ Pay: <strong>${payment.kpay_num}</strong></p>
+                                <p>🌊 Wave: <strong>${payment.wave_num}</strong></p>
                             </div>
-                            
-                            <form id="order-form" onsubmit="handleOrderSubmit(event, '${product.name}')">
-                                <div style="margin-bottom: 15px;">
-                                    <input type="text" id="cust-name" class="form-control" style="background:#0a0a0c;" placeholder="Your Name / Contact Info" required>
-                                </div>
-                                <div style="margin-bottom: 20px;">
-                                    <label style="display:block; font-size:0.85rem; color:#8e8e93; margin-bottom:8px;">Upload Payment Screenshot (Receipt)</label>
-                                    <input type="file" id="pay-screenshot" accept="image/*" class="form-control" style="background:#0a0a0c; padding:6px;" required>
-                                </div>
-                                <button type="submit" class="view-btn">Confirm Premium Purchase</button>
+                            <form id="order-form">
+                                <input type="text" id="cust-name" class="form-control" placeholder="Name / Contact" required>
+                                <input type="file" id="pay-screenshot" class="form-control" accept="image/*" required>
+                                <button type="submit" class="view-btn">Confirm Purchase</button>
                             </form>
                         </div>
                     </div>
                 `;
 
-            } catch (error) {
-                document.getElementById('product-details').innerHTML = `<p class="loading" style="color:red; grid-column:1/-1;">Product not found or Server Offline.</p>`;
+                document.getElementById('order-form').addEventListener('submit', (e) => handleOrderSubmit(e, product.name));
+            } catch (err) {
+                document.getElementById('product-details').innerHTML = `<p style="color:red;">Error loading product.</p>`;
             }
         }
 
-        // Order တင်လိုက်တဲ့အခါ ပတ်မယ့် ယာယီ Frontend Alert (နောက်အဆင့်မှာ Admin Dashboard နဲ့ ချိတ်ဆက်ပါမယ်)
-        function handleOrderSubmit(e, productName) {
+        async function handleOrderSubmit(e, productName) {
             e.preventDefault();
             const customerName = document.getElementById('cust-name').value;
-            alert(`🎉 Thank you ${customerName}!\nYour order for '${productName}' has been submitted. Admin will verify your screenshot shortly.`);
-            window.location.href = 'index.html';
+            const file = document.getElementById('pay-screenshot').files[0];
+            
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const orderData = { product_name: productName, customer_name: customerName, screenshot: event.target.result };
+                const res = await fetch(`${BASE_URL}/api/orders`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(orderData)
+                });
+                if (res.ok) { alert("Order တင်ခြင်း အောင်မြင်ပါသည်။"); window.location.href = 'index.html'; }
+                else { alert("Error ဖြစ်နေပါသည်။"); }
+            };
+            reader.readAsDataURL(file);
         }
 
         window.onload = loadProductDetails;
