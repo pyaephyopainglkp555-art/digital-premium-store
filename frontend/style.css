@@ -1,0 +1,163 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0a0a0c; /* Deep Dark Background */
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Header UI */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: rgba(15, 15, 20, 0.7);
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
+    border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+}
+
+nav a {
+    color: #a0a0ab;
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover, nav a.active {
+    color: #00f2fe;
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+}
+
+.admin-btn {
+    border: 1px solid #00f2fe;
+    padding: 8px 16px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.2);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: radial-gradient(circle at center, rgba(79, 172, 254, 0.15) 0%, transparent 60%);
+}
+
+.hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.hero p {
+    color: #8e8e93;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Products Grid */
+.container {
+    padding: 0 8% 80px 8%;
+}
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+    color: #ffffff;
+    border-left: 4px solid #00f2fe;
+    padding-left: 15px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 35px;
+}
+
+/* Product Premium Card (Glowing Card Effect) */
+.card {
+    background: rgba(20, 20, 25, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
+    position: relative;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: #00f2fe;
+    box-shadow: 0 10px 30px rgba(0, 242, 254, 0.25);
+}
+
+/* Brand Logos (Official Scale) */
+.card img {
+    height: 70px;
+    max-width: 100%;
+    object-fit: contain;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+}
+
+.card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.card .price {
+    color: #00f2fe;
+    font-size: 1.4rem;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 20px;
+}
+
+.view-btn {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.card:hover .view-btn {
+    box-shadow: 0 0 15px #00f2fe;
+}
+
+.loading {
+    color: #00f2fe;
+    text-align: center;
+    grid-column: 1 / -1;
+    font-family: 'Orbitron', sans-serif;
+}
