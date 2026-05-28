@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Premium | Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+        .sidebar { background: #0f0f14; padding: 40px 20px; border-right: 1px solid rgba(0, 242, 254, 0.1); }
+        .sidebar h3 { font-family: 'Orbitron', sans-serif; color: #00f2fe; margin-bottom: 40px; text-align: center; }
+        .sidebar button { width: 100%; padding: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.05); color: #fff; text-align: left; border-radius: 8px; cursor: pointer; margin-bottom: 15px; transition: 0.3s; font-weight: 500; }
+        .sidebar button:hover, .sidebar button.active { background: rgba(0, 242, 254, 0.1); border-color: #00f2fe; color: #00f2fe; }
+        .main-content { padding: 40px; overflow-y: auto; }
+        
+        /* Form Style */
+        .crud-form { background: #141419; padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 40px; max-width: 600px; }
+        .crud-form h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 20px; color: #4facfe; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-control { width: 100%; padding: 10px; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; }
+        
+        /* Table Style */
+        .product-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #141419; border-radius: 12px; overflow: hidden; }
+        .product-table th, .product-table td { padding: 15px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .product-table th { background: #0f0f14; font-family: 'Orbitron', sans-serif; color: #8e8e93; font-size: 0.9rem; }
+        .table-img { height: 35px; object-fit: contain; }
+        .btn-edit { background: #e67e22; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+        .btn-delete { background: #ff3b30; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        
+        /* Notification Alert Box */
+        .notification-box { background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; padding: 15px; border-radius: 8px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .notification-badge { background: #ff3b30; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <div class="sidebar">
+            <h3>CORE CONTROLLER</h3>
+            <button class="active">Product Management</button>
+            <button onclick="window.location.href='index.html'">View Website</button>
+            <button onclick="logout()" style="color: #ff3b30; border-color: rgba(255,59,48,0.2);">Secure Logout</button>
+        </div>
+
+        <div class="main-content">
+            <h2 class="section-title" style="margin-bottom: 20px;">System Dashboard</h2>
+
+            <div class="notification-box">
+                <div>
+                    <strong style="color: #00f2fe;">📢 Live Notifications</strong>
+                    <p style="font-size: 0.9rem; color: #a0a0ab; margin-top: 5px;" id="notif-text">No active pending orders at the moment.</p>
+                </div>
+                <span class="notification-badge" id="notif-count">0 New</span>
+            </div>
+
+            <div class="crud-form">
+                <h3 id="form-title">Add New Premium Service</h3>
+                <form id="product-form">
+                    <input type="hidden" id="product-id"> <div class="form-grid">
+                        <input type="text" id="prod-name" class="form-control" placeholder="Product Name (e.g. Netflix)" required>
+                        <input type="text" id="prod-slug" class="form-control" placeholder="URL Slug (e.g. netflix)" required>
+                    </div>
+                    <div class="form-grid">
+                        <input type="number" id="prod-price" class="form-control" placeholder="Price (Ks)" required>
+                        <input type="text" id="prod-img" class="form-control" placeholder="Official Logo Image URL" required>
+                    </div>
+                    <button type="submit" id="submit-btn" class="view-btn" style="width: auto;">Save Product</button>
+                    <button type="button" id="cancel-btn" class="btn-delete" style="display:none; padding: 12px 20px; margin-left: 10px; border-radius: 8px;">Cancel Edit</button>
+                </form>
+            </div>
+
+            <h3>Existing Products Inventory</h3>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Product Name</th>
+                        <th>Price (Ks)</th>
+                        <th>URL Slug</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-products-table">
+                    </tbody>
+            </table>
+            <h3 style="margin-top: 40px;">Manage Payment Accounts</h3>
+            <div class="crud-form" style="max-width: 100%;">
+                <form id="payment-form">
+                    <div class="form-grid">
+                        <div>
+                            <label style="color:#8e8e93; font-size:0.85rem;">KBZ Pay Number</label>
+                            <input type="text" id="kpay-num" class="form-control" required>
+                        </div>
+                        <div>
+                            <label style="color:#8e8e93; font-size:0.85rem;">KBZ Pay Account Name</label>
+                            <input type="text" id="kpay-name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div>
+                            <label style="color:#8e8e93; font-size:0.85rem;">Wave Money Number</label>
+                            <input type="text" id="wave-num" class="form-control" required>
+                        </div>
+                        <div>
+                            <label style="color:#8e8e93; font-size:0.85rem;">Wave Money Account Name</label>
+                            <input type="text" id="wave-name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div>
+                            <label style="color:#8e8e93; font-size:0.85rem;">Bank Account (CB/AYA)</label>
+                            <input type="text" id="bank-num" class="form-control" required>
+                        </div>
+                        <div>
+                            <label style="color:#8e8e93; font-size:0.85rem;">Bank Account Name</label>
+                            <input type="text" id="bank-name" class="form-control" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="view-btn" style="width: auto; margin-top: 15px;">Update Bank Credentials</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

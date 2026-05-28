@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Premium | Admin Access</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: rgba(20, 20, 25, 0.8);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
+            text-align: center;
+        }
+        .login-container h2 { font-family: 'Orbitron', sans-serif; margin-bottom: 30px; color: #00f2fe; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; color: #8e8e93; font-size: 0.9rem; }
+        .input-group input { width: 100%; padding: 12px; background: #141419; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 1rem; transition: 0.3s; }
+        .input-group input:focus { border-color: #00f2fe; outline: none; box-shadow: 0 0 10px rgba(0, 242, 254, 0.3); }
+        .error-msg { color: #ff3b30; font-size: 0.9rem; margin-bottom: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>ADMIN GATEWAY</h2>
+        <div id="error-box" class="error-msg"></div>
+        
+        <form id="login-form">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="username" required placeholder="Enter admin username">
+            </div>
+            <div class="input-group">
+                <label>Security Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="view-btn" style="margin-top: 10px;">Verify Identity</button>
+        </form>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
